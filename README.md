@@ -1,6 +1,6 @@
 # Imgur NSFW
 
-This is a basic Python script which changes your GNOME Shell wallpaper to a NSFW image from Imgur.com
+This is a basic Python script which changes your GNOME Shell or Mac wallpaper to a NSFW image from Imgur.com
 
 ## Setup
 
