@@ -1,3 +1,11 @@
+# Your API Key from Imgur.com
 key: c4803d90cfb105f
+
+# The gallery you wish to pull from.
 gallery: r/nsfw_wallpapers
+
+# The type. Either time or top.
 type: time
+
+# Your desktop session. Either gnome, kde, xfce or mac.
+environment: gnome

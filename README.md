@@ -1,6 +1,6 @@
 # Imgur NSFW
 
-This is a basic Python script which changes your GNOME Shell or Mac wallpaper to a NSFW image from Imgur.com
+This is a basic Python script which changes your GNOME/Mac/XFCE wallpaper to a NSFW image from Imgur.com
 
 ## Setup
 
@@ -14,7 +14,11 @@ Clone the repository
 
 Register for an API key at Imgur by clicking [here](https://imgur.com/signin?redirect=http://api.imgur.com/oauth2/addclient).
 
-Once you have your key, edit `config.yml` and edit the `key` entry replacing it with your own. You may also change the gallery or set the type to time or top.
+Once you have your key, edit `config.yml` and edit the `key` entry replacing it with your own.
+
+You will also have to change the `environment` entry to your desktop session (ie. mac, gnome, kde, etc).
+
+You may also change the gallery or set the type to time or top.
 
 ### Step 3
 
@@ -36,7 +40,7 @@ The above will run every 15 minutes changing the wallpaper
 ## Tasks
 
 + Add KDE support
-+ Add XFCE support
++ Need someone to test XFCE support by setting `xfce` to `environment` in `config.yml`
 
 ## Thanks
 

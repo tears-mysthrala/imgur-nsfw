@@ -61,18 +61,6 @@ class ImgurNSFW:
 
         return self.script_path + '/wallpapers/' + filename
 
-def getDE():
-    # http://ubuntuforums.org/showthread.php?t=1139057
-    desktop_environment = 'generic'
-    if environ.get('KDE_FULL_SESSION') == 'true':
-        desktop_environment = 'kde'
-    elif environ.get('GNOME_DESKTOP_SESSION_ID'):
-        desktop_environment = 'gnome'
-    else:
-        pass
-
-    return desktop_environment
-
 nsfw   = ImgurNSFW()
 config = yaml.load(open(nsfw.getScriptPath() + '/config.yml', 'r'))
 nsfw.setKey(config['key'])
@@ -88,14 +76,13 @@ if wallpaper == False:
 
 wallpaper_path = nsfw.saveWallpaper(wallpaper)
 
-platform = platform.system().lower()
-de       = getDE()
-
-if platform == 'linux':
-    if de == 'gnome':
-        system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri file://' + wallpaper_path)
-        system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options zoom')
-elif platform == 'darwin':
+environment = config['environment']
+if environment == 'gnome':
+    system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri file://' + wallpaper_path)
+    system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options zoom')
+elif environment == 'xfce':
+    system('DISPLAY=:0 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s ' + wallpaper_path)
+elif environment == 'mac':
     script = """/usr/bin/osascript<<END
 tell application "Finder"
 set desktop picture to POSIX file "%s"
