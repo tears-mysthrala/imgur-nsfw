@@ -7,6 +7,7 @@ This is a basic Python script which changes your GNOME Shell wallpaper to a NSFW
 ### Step 1
 
 Clone the repository
+
     git clone git@github.com:tyler-king/imgur-nsfw.git
 
 ### Step 2
