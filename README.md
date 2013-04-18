@@ -32,3 +32,12 @@ The above will run every 15 minutes changing the wallpaper
 
 + Python
 + Python-YAML
+
+## Tasks
+
++ Add KDE support
++ Add XFCE support
+
+## Thanks
+
+Thanks to [igorw](http://github.com/igorw) for testing the Mac support.
