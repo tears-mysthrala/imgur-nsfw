@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+import urllib2, json
+import yaml
+from sys import exit
+from random import randrange
+from os import system, mkdir
+from os.path import basename, realpath, dirname, isdir
+
+script_path = dirname(realpath(__file__))
+
+if not isdir(script_path + '/wallpapers'):
+    mkdir(script_path + '/wallpapers')
+
+config = yaml.load(open(script_path + '/config.yml', 'r'))
+key    = config['key']
+url    = 'https://api.imgur.com/3/gallery/'+ config['gallery'] + '/' + config['type']
+
+req = urllib2.Request(url)
+req.add_header('Authorization', 'Client-ID ' + key)
+
+try:
+    result = urllib2.urlopen(req)
+    json   = json.loads(result.read())
+except urllib2.HTTPError:
+    json = None
+
+if json == None:
+    exit()
+
+image    = json['data'][randrange(0, len(json['data']))]['link']
+filename = basename(image)
+
+with open(script_path + '/wallpapers/' + filename, 'w') as f:
+    try:
+        req    = urllib2.Request(image)
+        result = urllib2.urlopen(req).read()
+    except urllib2.HTTPError:
+        exit()
+
+    f.write(result)
+
+    system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri file://' + script_path + '/wallpapers/' + filename)
+    system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options zoom')
