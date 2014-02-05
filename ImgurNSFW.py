@@ -1,11 +1,11 @@
 import urllib2, json
 import os
 from random import randrange
-from os.path import basename, realpath, dirname
+from os import path
 
 class ImgurNSFW:
     def __init__(self):
-        self.script_path = dirname(realpath(__file__))
+        self.script_path = path.dirname(path.realpath(__file__))
         self.__key       = None
         self.__gallery   = None
         self.__type      = None
@@ -32,7 +32,7 @@ class ImgurNSFW:
         return self.__type
 
     def getWallpaper(self):
-        req = urllib2.Request('https://api.imgur.com/3/gallery/'+ self.getGallery() + '/' + self.getType())
+        req = urllib2.Request('https://api.imgur.com/3/gallery/%s/%s' % (self.getGallery(), self.getType()))
         req.add_header('Authorization', 'Client-ID ' + self.getKey())
 
         try:
@@ -47,12 +47,12 @@ class ImgurNSFW:
         return data['data'][randrange(0, len(data['data']))]['link']
 
     def saveWallpaper(self, image):
-        filename = basename(image)
+        filename = path.basename(image)
 
-        with open(self.script_path + os.sep + 'wallpapers' + os.sep + filename, 'wb') as f:
+        with open(path.join(self.script_path, 'wallpapers', filename), 'wb') as f:
             req    = urllib2.Request(image)
             result = urllib2.urlopen(req).read()
 
             f.write(result)
 
-        return self.script_path + os.sep + 'wallpapers' + os.sep + filename
+        return path.join(self.script_path, 'wallpapers', filename)
