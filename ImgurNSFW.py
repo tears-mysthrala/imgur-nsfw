@@ -1,4 +1,5 @@
 import urllib2, json
+import os
 from random import randrange
 from os.path import basename, realpath, dirname
 
@@ -48,10 +49,10 @@ class ImgurNSFW:
     def saveWallpaper(self, image):
         filename = basename(image)
 
-        with open(self.script_path + '/wallpapers/' + filename, 'w') as f:
+        with open(self.script_path + os.sep + 'wallpapers' + os.sep + filename, 'wb') as f:
             req    = urllib2.Request(image)
             result = urllib2.urlopen(req).read()
 
             f.write(result)
 
-        return self.script_path + '/wallpapers/' + filename
+        return self.script_path + os.sep + 'wallpapers' + os.sep + filename

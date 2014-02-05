@@ -7,5 +7,5 @@ gallery: r/nsfw_wallpapers
 # The type. Either time or top.
 type: time
 
-# Your desktop session. Either gnome, kde, xfce or mac.
-environment: gnome
+# Your desktop session. Either gnome, kde, xfce, windows or mac.
+environment: windows

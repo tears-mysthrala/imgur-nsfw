@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import yaml, platform
 from ImgurNSFW import ImgurNSFW
-from sys import exit
-from os import system, mkdir, environ
-from os.path import isdir
+from sys import exit, argv
+from os import system, mkdir, environ, sep, path
 
 # Import the config; set the API key, gallery and type.
-nsfw   = ImgurNSFW()
-config = yaml.load(open(nsfw.getScriptPath() + '/config.yml', 'r'))
+nsfw      = ImgurNSFW()
+conf_file = argv[1] if len(argv) > 1 else path.join(nsfw.getScriptPath(), 'config.yml')
+config    = yaml.load(open(conf_file, 'r'))
 nsfw.setKey(config['key'])
 nsfw.setGallery(config['gallery'])
 nsfw.setType(config['type'])
@@ -18,8 +18,8 @@ if wallpaper == False:
     exit()
 
 # Check if we have a wallpaper directory.
-if not isdir(nsfw.getScriptPath() + '/wallpapers'):
-    mkdir(nsfw.getScriptPath() + '/wallpapers')
+if not path.isdir(path.join(nsfw.getScriptPath(), 'wallpapers')):
+    mkdir(path.join(nsfw.getScriptPath(), 'wallpapers'))
 
 # Save the wallpaper and get it's local path.
 wallpaper_path = nsfw.saveWallpaper(wallpaper)
@@ -27,11 +27,11 @@ wallpaper_path = nsfw.saveWallpaper(wallpaper)
 environment = config['environment']
 if environment == 'gnome':
     # GNOME Shell commands.
-    system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri file://' + wallpaper_path)
+    system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri file://%s' % wallpaper_path)
     system('DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-options zoom')
 elif environment == 'xfce':
     # XFCE commands.
-    system('DISPLAY=:0 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s ' + wallpaper_path)
+    system('DISPLAY=:0 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s %s' % wallpaper_path)
 elif environment == 'mac':
     # Mac OSX commands.
     script = """/usr/bin/osascript<<END
@@ -40,3 +40,6 @@ set desktop picture to POSIX file "%s"
 end tell
 END"""
     system(script % wallpaper_path)
+elif environment == 'windows':
+    # Windows commands.
+    system('powershell -ExecutionPolicy unrestricted -File "%s" "%s"' % (path.join(nsfw.getScriptPath(), 'bin', 'ChangeWallpaper.ps1'), wallpaper_path))
